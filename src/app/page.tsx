@@ -2,14 +2,6 @@ import { createClient } from "@/client/supabase";
 import Card from "@/components/Card";
 import { notFound } from "next/navigation";
 
-type Products = {
-  id: number;
-  name: string;
-  price: number;
-  description: string;
-  imageUrl: string;
-};
-
 export const revalidate = 3600;
 const HomePage = async () => {
   const supabase = createClient();
