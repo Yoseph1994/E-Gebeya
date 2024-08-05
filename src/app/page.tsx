@@ -1,39 +1,26 @@
 import { createClient } from "@/client/supabase";
 import Card from "@/components/Card";
+import { notFound } from "next/navigation";
 
-type Products = {
-  id: number;
-  name: string;
-  price: number;
-  description: string;
-  imageUrl: string;
-};
+// type Products = {
+//   id: number;
+//   name: string;
+//   price: number;
+//   description: string;
+//   imageUrl: string;
+// };
 
+export const revalidate = 3600;
 const HomePage = async () => {
-  const topProducts: Products[] = [
-    {
-      id: 1,
-      name: "Product 1",
-      price: 19.99,
-      description: "Product 1 description",
-      imageUrl:
-        "https://asset.cloudinary.com/dgtrmhlsp/3ece2ae1ab26e602f7dfc6b7634f9020",
-    },
-    {
-      id: 2,
-      name: "Product 2",
-      price: 1900.99,
-      description: "Product 2 description",
-      imageUrl:
-        "https://console.cloudinary.com/console/c-b2a534be96c0c20eac078b580e9215/media_library/homepage/asset/a88d557a44c5ca13b366f1ac6069968c",
-    },
-  ];
-
   const supabase = createClient();
 
   const { data: products, error } = await supabase.from("easy-sell").select();
+  const { data: topProducts, error: topPdctError } = await supabase
+    .from("easy-sell")
+    .select()
+    .eq("boost", true);
 
-  if (!products) return <p>No products</p>;
+  if (!products) return notFound();
   return (
     <main className="min-h-screen max-w-[100rem] mx-auto">
       <div className="px-12 pt-12 pb-20">
@@ -45,7 +32,7 @@ const HomePage = async () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2 xl:gap-12">
             {topProducts &&
               topProducts.map((item, idx) => (
-                <Card id={item.id} key={`${item.name}-${idx}`} {...item} />
+                <Card key={`${item.name}-${idx}`} {...item} />
               ))}
           </div>
         </div>
@@ -54,12 +41,7 @@ const HomePage = async () => {
         {products && products.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {products.map((item, idx) => (
-              <Card
-                id={item.id}
-                key={`${item.name}-${idx}`}
-                imageUrl={`${process.env.SUPABASE_IMAGE}/${item.imageUrl}`}
-                {...item}
-              />
+              <Card id={item.id} key={`${item.name}-${idx}`} {...item} />
             ))}
           </div>
         ) : (

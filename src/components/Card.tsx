@@ -1,3 +1,4 @@
+import { getImageUrl } from "@/utils";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -22,7 +23,7 @@ const Card: React.FC<CardProps> = ({
         <div>
           <div className="relative h-96 bg-center ">
             <Image
-              src="https://asset.cloudinary.com/dgtrmhlsp/3ece2ae1ab26e602f7dfc6b7634f9020"
+              src={getImageUrl(imageUrl)}
               alt={name}
               fill={true}
               className="rounded-t"
