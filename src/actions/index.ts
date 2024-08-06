@@ -2,6 +2,8 @@
 
 import { createClient } from "@/client/supabase";
 import { schema } from "@/utils/validation";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function sellYourItem(prevState: any, formData: FormData) {
   const validatedFields = schema.safeParse({
@@ -70,4 +72,19 @@ export async function sellYourItem(prevState: any, formData: FormData) {
       message: "Error uploading image and inserting data into database",
     };
   }
+  revalidatePath("/");
+  redirect("/");
 }
+
+// export async function getData() {
+//   const supabase = createClient();
+
+//   const { data: products, error } = await supabase.from("easy-sell").select();
+//   const { data: topProducts, error: topPdctError } = await supabase
+//     .from("easy-sell")
+//     .select()
+//     .eq("boost", true);
+
+//   return { products, error, topPdctError, topProducts };
+//   revalidatePath("/");
+// }

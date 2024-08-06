@@ -2,7 +2,7 @@ import { createClient } from "@/client/supabase";
 import Card from "@/components/Card";
 import { notFound } from "next/navigation";
 
-export const revalidate = 3600;
+export const revalidate = 1000;
 const HomePage = async () => {
   const supabase = createClient();
 
