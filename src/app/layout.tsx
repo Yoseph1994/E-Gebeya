@@ -23,7 +23,7 @@ export default function RootLayout({
         <Header />
         <main className="bg-gray-951 py-12">{children}</main>
         <Footer />
-        <Toaster position="top-center" />
+        <Toaster position="bottom-left" />
       </body>
     </html>
   );

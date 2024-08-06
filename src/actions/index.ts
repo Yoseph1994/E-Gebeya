@@ -51,13 +51,6 @@ export async function sellYourItem(prevState: any, formData: FormData) {
         .from("easy-sell")
         .insert({ name, description, contactEmail, price, imageUrl: path });
 
-      if (uploadData) {
-        return {
-          type: "success",
-          message: "Data added succesfully",
-        };
-      }
-
       if (pdctInsertError) {
         return {
           type: "error",
@@ -67,24 +60,12 @@ export async function sellYourItem(prevState: any, formData: FormData) {
     }
   } catch (error) {
     console.log("Error from upload");
-    return {
-      type: "error",
-      message: "Error uploading image and inserting data into database",
-    };
   }
+
   revalidatePath("/");
   redirect("/");
+  return {
+    type: "success",
+    message: "Data Added succesfully.",
+  };
 }
-
-// export async function getData() {
-//   const supabase = createClient();
-
-//   const { data: products, error } = await supabase.from("easy-sell").select();
-//   const { data: topProducts, error: topPdctError } = await supabase
-//     .from("easy-sell")
-//     .select()
-//     .eq("boost", true);
-
-//   return { products, error, topPdctError, topProducts };
-//   revalidatePath("/");
-// }

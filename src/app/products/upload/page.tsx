@@ -1,7 +1,7 @@
 "use client";
 import { sellYourItem } from "@/actions";
 import SubmitBtn from "@/components/SubmitBtn";
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormState } from "react-dom";
 import toast from "react-hot-toast";
 
@@ -16,9 +16,12 @@ const Page: React.FC = () => {
     initialState
   );
 
-  if (state?.type === "success") {
-    toast.success(state?.message);
-  }
+  useEffect(() => {
+    if (state?.type === "success") {
+      toast.success(state?.message);
+    }
+  }, [state]);
+
   return (
     <div className="px-12 pt-24 pb-12 min-h-screen max-w-[100rem] mx-auto flex gap-56">
       <div>
@@ -96,7 +99,6 @@ const Page: React.FC = () => {
             )}
           </div>
 
-          {/* <SubmitButton /> */}
           <SubmitBtn />
         </form>
       </div>
