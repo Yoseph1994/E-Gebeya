@@ -17,7 +17,7 @@ export async function sellYourItem(prevState: any, formData: FormData) {
     return {
       type: "error",
       errors: validatedFields.error.flatten().fieldErrors,
-      message: "Something happened in actions/sellurItem",
+      message: "Validation error in actions/sellurItem",
     };
   }
 
@@ -29,7 +29,7 @@ export async function sellYourItem(prevState: any, formData: FormData) {
   try {
     const fileName = `${Math.random()}-${imageUrl.name}`;
     const { data, error } = await supabase.storage
-      .from("storage")
+      .from("Images")
       .upload(fileName, imageUrl, {
         cacheControl: "3600",
         upsert: false,
@@ -45,9 +45,16 @@ export async function sellYourItem(prevState: any, formData: FormData) {
     if (data) {
       const path = data.path;
       // insert data
-      const { error: pdctInsertError } = await supabase
+      const { error: pdctInsertError, data: uploadData } = await supabase
         .from("easy-sell")
         .insert({ name, description, contactEmail, price, imageUrl: path });
+
+      if (uploadData) {
+        return {
+          type: "success",
+          message: "Data added succesfully",
+        };
+      }
 
       if (pdctInsertError) {
         return {
